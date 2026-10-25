@@ -32,19 +32,20 @@ DWORD WINAPI StartCheats(LPVOID);
 void CreateDebugConsole();
 HWND CheckTopWindow();
 
-BOOL WINAPI DllMain(HINSTANCE module, DWORD reason, LPVOID reserved)
+BOOL APIENTRY DllMain(HMODULE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-	if (reason == DLL_PROCESS_ATTACH)
+	if (dwReason == DLL_PROCESS_ATTACH)
 	{
-		DisableThreadLibraryCalls(module);
+		DisableThreadLibraryCalls(hInstance);
 
 		/*
 #ifndef _DEBUG
-		HideDll(module);
+		HideDll(hModule);
 #endif
 		*/
 
-		CreateThread(NULL, NULL, StartCheats, module, NULL, NULL);
+		if (const HANDLE hMain = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)StartCheats, hInstance, 0, 0))
+			CloseHandle(hMain);
 
 		/*
 #ifndef _DEBUG
@@ -52,7 +53,7 @@ BOOL WINAPI DllMain(HINSTANCE module, DWORD reason, LPVOID reserved)
 #endif
 		*/
 	}
-	else if (reason == DLL_PROCESS_DETACH)
+	else if (dwReason == DLL_PROCESS_DETACH)
 	{
 #ifdef _DEBUG
 		FreeConsole();
@@ -63,10 +64,10 @@ BOOL WINAPI DllMain(HINSTANCE module, DWORD reason, LPVOID reserved)
 		g_pConfig->CloseFile();
 	}
 
-	return TRUE;
+	return true;
 }
 
-DWORD WINAPI StartCheats(LPVOID module)
+DWORD WINAPI StartCheats(LPVOID lpModule)
 {
 #ifdef _DEBUG
 	CreateDebugConsole();
@@ -82,7 +83,7 @@ DWORD WINAPI StartCheats(LPVOID module)
 	}
 
 	Utils::g_hCurrentWindow = g_hGameWindow;
-	Utils::init(reinterpret_cast<HINSTANCE>(module));
+	Utils::init(reinterpret_cast<HINSTANCE>(lpModule));
 	ImGui::CreateContext();
 
 	g_pConsole = std::make_unique<CConsole>();
@@ -107,8 +108,8 @@ DWORD WINAPI StartCheats(LPVOID module)
 
 	g_pBaseMenu = std::make_unique<CBaseMenu>();
 	g_pBaseMenu->Init();
-
-	return EXIT_SUCCESS;
+	
+	FreeLibraryAndExitThread(reinterpret_cast<HMODULE>(lpModule), EXIT_SUCCESS);
 }
 
 void CreateDebugConsole()
