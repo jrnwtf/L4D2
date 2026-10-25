@@ -602,45 +602,6 @@
     <ClInclude Include="..\hl2sdk\Utils\utlfixedmemory.h">
       <Filter>hl2sdk\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3d9.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3d9caps.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3d9types.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9anim.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9core.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9effect.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9math.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9mesh.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9shader.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9shape.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9tex.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dxsdk\Include\d3dx9xof.h">
-      <Filter>dxsdk\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\hl2sdk\Structs\MRecipientFilter.h">
       <Filter>hl2sdk\Structs</Filter>
     </ClInclude>
@@ -661,9 +622,6 @@
     <None Include="..\imgui\examples\opengl2_example\imgui_impl_glfw.cpp">
       <Filter>ImGui\opengl</Filter>
     </None>
-    <None Include="..\dxsdk\Include\d3dx9math.inl">
-      <Filter>dxsdk\include</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\detours\LDE64.asm">
@@ -672,13 +630,5 @@
     <CustomBuild Include="..\detours\LDE64x64.asm">
       <Filter>detours</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\dxsdk\Lib\x86\d3d9.lib">
-      <Filter>dxsdk\lib</Filter>
-    </Library>
-    <Library Include="..\dxsdk\Lib\x86\d3dx9.lib">
-      <Filter>dxsdk\lib</Filter>
-    </Library>
   </ItemGroup>
 </Project>
