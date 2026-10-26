@@ -32,20 +32,19 @@ DWORD WINAPI StartCheats(LPVOID);
 void CreateDebugConsole();
 HWND CheckTopWindow();
 
-BOOL APIENTRY DllMain(HMODULE hInstance, DWORD dwReason, LPVOID lpReserved)
+BOOL WINAPI DllMain(HINSTANCE module, DWORD reason, LPVOID reserved)
 {
-	if (dwReason == DLL_PROCESS_ATTACH)
+	if (reason == DLL_PROCESS_ATTACH)
 	{
-		DisableThreadLibraryCalls(hInstance);
+		DisableThreadLibraryCalls(module);
 
 		/*
 #ifndef _DEBUG
-		HideDll(hModule);
+		HideDll(module);
 #endif
 		*/
 
-		if (const HANDLE hMain = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)StartCheats, hInstance, 0, 0))
-			CloseHandle(hMain);
+		CreateThread(NULL, NULL, StartCheats, module, NULL, NULL);
 
 		/*
 #ifndef _DEBUG
@@ -53,7 +52,7 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD dwReason, LPVOID lpReserved)
 #endif
 		*/
 	}
-	else if (dwReason == DLL_PROCESS_DETACH)
+	else if (reason == DLL_PROCESS_DETACH)
 	{
 #ifdef _DEBUG
 		FreeConsole();
@@ -64,15 +63,15 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD dwReason, LPVOID lpReserved)
 		g_pConfig->CloseFile();
 	}
 
-	return true;
+	return TRUE;
 }
 
-DWORD WINAPI StartCheats(LPVOID lpModule)
+DWORD WINAPI StartCheats(LPVOID module)
 {
 #ifdef _DEBUG
 	CreateDebugConsole();
 #endif
-	
+
 	// Utils::FindWindowByProccess();
 	while ((g_hGameWindow = FindWindowA(XorStr("Valve001"), nullptr)) == NULL)
 	{
@@ -83,7 +82,7 @@ DWORD WINAPI StartCheats(LPVOID lpModule)
 	}
 
 	Utils::g_hCurrentWindow = g_hGameWindow;
-	Utils::init(reinterpret_cast<HINSTANCE>(lpModule));
+	Utils::init(reinterpret_cast<HINSTANCE>(module));
 	ImGui::CreateContext();
 
 	g_pConsole = std::make_unique<CConsole>();
@@ -92,7 +91,7 @@ DWORD WINAPI StartCheats(LPVOID lpModule)
 #ifdef _DEBUG
 	g_pfnOldExceptFilter = SetUnhandledExceptionFilter(Hooked_UnhandledExceptionFilter);
 #endif
-	
+
 	g_pConfig = std::make_unique<CProfile>();
 	g_pConfig->OpenFile(Utils::BuildPath(XorStr("setting.ini")));
 	g_pConfig->LoadFromFile();
@@ -108,8 +107,8 @@ DWORD WINAPI StartCheats(LPVOID lpModule)
 
 	g_pBaseMenu = std::make_unique<CBaseMenu>();
 	g_pBaseMenu->Init();
-	
-	FreeLibraryAndExitThread(reinterpret_cast<HMODULE>(lpModule), EXIT_SUCCESS);
+
+	return EXIT_SUCCESS;
 }
 
 void CreateDebugConsole()
